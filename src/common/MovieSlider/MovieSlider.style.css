@@ -1,0 +1,17 @@
+.carousel-container{
+  overflow:hidden;
+  height: 440px;
+}
+.slider-container{
+  padding-top: 50px;
+  padding-bottom: 50px;
+  /* margin-bottom: 100px; */
+}
+
+@media (max-width:480px){
+  .carousel-container{
+    height: 330px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

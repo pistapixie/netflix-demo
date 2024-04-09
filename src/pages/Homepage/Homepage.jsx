@@ -11,6 +11,8 @@ const Homepage = () => {
     <div>
       <Banner />
       <PopularMovieSlide />
+      <PopularMovieSlide />
+      <PopularMovieSlide />
     </div>
   );
 };
