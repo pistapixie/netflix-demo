@@ -24,9 +24,13 @@ const MoviePage = () => {
   });
 
   const handlePageClick = ({ selected }) => {
-    setPage(selected + 1);
+    const newPage = selected + 1;
+    setPage(newPage);
+    // URL의 page 쿼리 파라미터 업데이트
+    setQuery({ q: keyword, page: newPage.toString() }, { replace: true });
   };
-  console.log("eee ", data);
+
+  // console.log("eee ", data);
   if (isLoading) {
     return (
       <div className="spinner-area">
