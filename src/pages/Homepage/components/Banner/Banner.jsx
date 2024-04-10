@@ -22,9 +22,9 @@ const Banner = () => {
       }}
       className="banner"
     >
-      <div className="text-white banner-text-area">
+      <div className="text-white banner-text">
         <h1>{data?.results[8].title}</h1>
-        <p>{data?.results[8].overview}</p>
+        <p className="banner-overview">{data?.results[8].overview}</p>
       </div>
     </div>
   );
