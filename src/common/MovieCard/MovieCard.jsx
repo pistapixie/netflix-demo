@@ -5,7 +5,7 @@ import "./MovieCard.style.css";
 
 const MovieCard = ({ movie }) => {
   const { data: genreData } = useMovieGenreQuery();
-  console.log("ggg", genreData);
+  // console.log("ggg", genreData);
 
   const showGenre = (genreIdList) => {
     if (!genreData) return [];
