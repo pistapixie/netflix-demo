@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import api from "../../utils/api";
 import Review from "./components/Review";
 import MovieCard from "../../common/MovieCard/MovieCard";
+import YouTubeVideo from "./components/YouTube";
+import Modal from "react-bootstrap/Modal"; // Bootstrap 모달을 사용
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -11,19 +13,33 @@ const MovieDetailPage = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [showReviews, setShowReviews] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [trailerId, setTrailerId] = useState("");
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await api.get(`/movie/${id}`);
         setMovie(response.data);
+
         const reviewResponse = await api.get(`/movie/${id}/reviews`);
         setReviewCount(reviewResponse.data.results.length);
         setReviews(reviewResponse.data.results);
+
         const recommendationResponse = await api.get(
           `/movie/${id}/recommendations`
         );
         setRecommendations(recommendationResponse.data.results);
+
+        // 영화 예고편 정보를 가져오는 API 호출
+        const trailerResponse = await api.get(`/movie/${id}/videos`);
+        const trailer = trailerResponse.data.results.find(
+          (video) => video.type === "Trailer"
+        );
+        setTrailerId(trailer?.key);
+
+        // 콘솔에 예고편 정보를 출력
+        console.log("Trailer Response:", trailerResponse.data);
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -34,6 +50,10 @@ const MovieDetailPage = () => {
 
   const toggleReviews = () => {
     setShowReviews(!showReviews);
+  };
+
+  const handleTrailerModal = () => {
+    setShowTrailer(!showTrailer);
   };
 
   if (!movie) {
@@ -73,10 +93,30 @@ const MovieDetailPage = () => {
             )}
           </div>
         )}
+        <button onClick={handleTrailerModal} style={{ cursor: "pointer" }}>
+          Watch Trailer
+        </button>
+        <Modal
+          show={showTrailer}
+          onHide={handleTrailerModal}
+          size="lg"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{movie.title} Trailer</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {trailerId ? (
+              <YouTubeVideo videoId={trailerId} />
+            ) : (
+              <p>No trailer available.</p>
+            )}
+          </Modal.Body>
+        </Modal>
         <h2>Recommended Movies</h2>
         <div className="recommendations">
           {recommendations.map((rec) => (
-            <MovieCard key={rec.id} movie={rec} /> // 각 추천 영화를 MovieCard 컴포넌트로 랜더링
+            <MovieCard key={rec.id} movie={rec} />
           ))}
         </div>
       </div>
