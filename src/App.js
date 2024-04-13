@@ -1,4 +1,9 @@
-import { Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Switch,
+} from "react-router-dom";
 import Applayout from "./layout/Applayout";
 import Homepage from "./pages/Homepage/Homepage";
 import MoviePage from "./pages/Movies/MoviePage";
