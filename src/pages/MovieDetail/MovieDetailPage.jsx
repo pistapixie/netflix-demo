@@ -82,7 +82,7 @@ const MovieDetailPage = () => {
             ))}
         </div>
         <div className="overview-container">
-          <p>Overview: {movie.overview}</p>
+          <p> {movie.overview}</p>
         </div>
         <div className="info-container">
           <p className="info-tag">Budget: ${movie.budget.toLocaleString()}</p>
@@ -122,6 +122,7 @@ const MovieDetailPage = () => {
             )}
           </Modal.Body>
         </Modal>
+
         <h2 className="recommended-movies">Recommended Movies</h2>
         <div className="recommendations">
           {recommendations.map((rec) => (
