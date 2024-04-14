@@ -12,10 +12,9 @@ const YouTubeVideo = ({ videoId }) => {
     },
   };
 
-  // 핸들러는 컴포넌트 내에서 직접 선언될 수 있습니다.
   const handleReady = (event) => {
     console.log("Player is ready");
-    event.target.pauseVideo(); // 비디오 일시 정지
+    event.target.pauseVideo();
   };
 
   const handlePlay = (event) => {
@@ -50,7 +49,7 @@ const YouTubeVideo = ({ videoId }) => {
     <div>
       <h2>YouTube Video Example</h2>
       <YouTube
-        videoId={videoId} // videoId를 props로 받습니다.
+        videoId={videoId}
         opts={opts}
         onReady={handleReady}
         onPlay={handlePlay}

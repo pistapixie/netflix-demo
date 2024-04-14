@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Review = ({ review }) => {
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => setExpanded(!expanded);
-  const maxContentLength = 200; // 최대 문자 길이
+  const maxContentLength = 200;
 
   return (
     <div
