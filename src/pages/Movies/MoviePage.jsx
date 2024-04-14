@@ -4,33 +4,34 @@ import { useSearchMovieQuery } from "../../hooks/useSearchMovie";
 import { Spinner, Alert, Container, Row, Col } from "react-bootstrap";
 import MovieCard from "../../common/MovieCard/MovieCard";
 import ReactPaginate from "react-paginate";
+import SortBar from "./components/SortBar";
 
-//경로 2가지
-// nav바에서 클릭해서 온 경우 => popularMovie 보여주기
-// keyword를 입력해서 온 경우 => keyword와 관련된 영화들을 보여줌
-
-//1.페이지네이션 설치
-//2. 페이지 state 만들기
-//3. 페이지네이션 클릭할 때마다 page 바꿔주기
-//4. page 값이 바뀔 때마다 useSearchMovie에 page까지 넣어서 fetch
 const MoviePage = () => {
   const [query, setQuery] = useSearchParams();
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState("desc");
   const keyword = query.get("q");
 
   const { data, isLoading, isError, error } = useSearchMovieQuery({
     keyword,
     page,
+    sort,
   });
 
   const handlePageClick = ({ selected }) => {
     const newPage = selected + 1;
     setPage(newPage);
-    // URL의 page 쿼리 파라미터 업데이트
-    setQuery({ q: keyword, page: newPage.toString() }, { replace: true });
+    setQuery({ q: keyword, page: newPage.toString(), sort }, { replace: true });
   };
 
-  // console.log("eee ", data);
+  const handleSortChange = (newSort) => {
+    setSort(newSort);
+    setQuery(
+      { q: keyword, page: page.toString(), sort: newSort },
+      { replace: true }
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="spinner-area">
@@ -42,18 +43,27 @@ const MoviePage = () => {
       </div>
     );
   }
+
   if (isError) {
     return <Alert variant="danger">{error.message}</Alert>;
   }
+
   return (
     <Container>
       <Row>
         <Col lg={4} xs={12}>
-          필터
+          <SortBar
+            options={[
+              { value: "popularity.desc", label: "인기도 높은순" },
+              { value: "popularity.asc", label: "인기도 낮은순" },
+            ]}
+            onSortChange={handleSortChange}
+            currentSort={sort}
+            currentDirection={sort === "popularity.desc" ? "desc" : "asc"}
+          />
         </Col>
         <Col lg={8} xs={12}>
           <Row>
-            {" "}
             {data?.results.map((movie, index) => (
               <Col key={index} lg={4} xs={12}>
                 <MovieCard movie={movie} />
@@ -65,7 +75,7 @@ const MoviePage = () => {
             onPageChange={handlePageClick}
             pageRangeDisplayed={3}
             marginPagesDisplayed={2}
-            pageCount={data?.total_pages} //전체페이지가 몇개인지
+            pageCount={data?.total_pages}
             previousLabel="< previous"
             pageClassName="page-item"
             pageLinkClassName="page-link"

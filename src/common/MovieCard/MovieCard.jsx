@@ -30,7 +30,7 @@ const MovieCard = ({ movie }) => {
       }}
       onClick={handleClick}
     >
-      <div className="overlay">
+      <div className="overlay ">
         <h1>{movie.title}</h1>
         {showGenre(movie.genre_ids).map((genre, index) => (
           <Badge bg="danger" key={index}>
