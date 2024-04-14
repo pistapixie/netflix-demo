@@ -8,7 +8,7 @@ const Review = ({ review }) => {
   return (
     <div
       style={{
-        border: "1px solid red",
+        border: "1px solid darkred",
         padding: "10px",
         margin: "10px 0",
         borderRadius: "8px",
